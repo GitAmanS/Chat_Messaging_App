@@ -1,18 +1,24 @@
-// src/App.js
-
-import React from 'react';
+import React, { useState } from 'react';
+import LandingPage from './components/LandingPage';
 import SignUpForm from './components/SignUpForm';
-
+import LoginForm from './components/LoginForm';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 function App() {
-  const handleSignUp = (formData) => {
-    // Handle form submission logic specific to the parent component
-    console.log('Handling form submission in the parent component:', formData);
-  };
+  const [showSignUp, setShowSignUp] = useState(false);
 
   return (
-    <div className="App">
-      <SignUpForm onSubmit={handleSignUp} />
-    </div>
+    <BrowserRouter>
+    <Routes>
+      
+        
+          <Route path="/signup" element={<SignUpForm/>} />
+          <Route path="/login" element={<LoginForm/>} />
+          <Route path="/" element={<LandingPage/>} />
+        
+      
+    </Routes>
+    </BrowserRouter>
+    
   );
 }
 
