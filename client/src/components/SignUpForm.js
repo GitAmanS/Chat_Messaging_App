@@ -17,12 +17,8 @@ const SignUpForm = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:5000/auth/register', {
-        "name":"amaa23n",
-        "email":"amansh234aikdh82734",
-        "phone":"23098472323094",
-        "password":"12323"
-      });
+      console.log(formData)
+      const response = await axios.post('http://localhost:5000/auth/register', formData);
 
       if (response.status === 201) {
         const data = response.data;
