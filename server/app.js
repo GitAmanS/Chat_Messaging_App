@@ -1,13 +1,25 @@
+// app/app.js
+
 const express = require('express');
+const sequelize = require('./config/database');
+const authRoutes = require('./routes/authRoutes');
+
 const app = express();
-const port = 3000;
 
-app.use(express.static('client/build'));
+app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-});
+app.use('/auth', authRoutes);
 
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
-});
+const PORT = 5000;
+
+sequelize
+  .sync()
+  .then(() => {
+    console.log('Database synced successfully');
+    app.listen(PORT, () => {
+      console.log(`Server is running on http://localhost:${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.error('Unable to connect to the database:', error);
+  });
