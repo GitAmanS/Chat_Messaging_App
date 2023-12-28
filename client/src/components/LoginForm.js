@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: '',
     password: '',
   });
+
+  const history = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,8 +21,13 @@ const LoginForm = () => {
       const response = await axios.post('http://localhost:5000/auth/login', formData);
 
       if (response.status === 200) {
-        const data = response.data;
-        console.log(data); // You can handle the response data here, e.g., set user authentication
+        const { token } = response.data;
+
+        // Store the token in local storage
+        localStorage.setItem('token', token);
+
+        // Redirect to the /chats page
+        history('/chats');
       } else {
         console.error('Login failed');
       }

@@ -1,10 +1,11 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
-
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
+const {v4: uuid} = require('uuid')
+const generateToken = ({ userId, name, email }) => {
+  return jwt.sign({ userId, name, email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 };
+
 
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -22,7 +23,7 @@ exports.loginUser = async (req, res) => {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
 
-    const token = generateToken(user.id);
+    const token = generateToken({ userId: user.id, name: user.name, email: user.email });
 
     res.status(200).json({ message: 'Login successful', token });
   } catch (error) {
@@ -30,6 +31,7 @@ exports.loginUser = async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 };
+
 
 exports.registerUser = async (req, res) => {
   const { name, email, phone, password } = req.body;

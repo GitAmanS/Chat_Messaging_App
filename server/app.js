@@ -4,14 +4,23 @@ const express = require('express');
 const sequelize = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 
+const http = require('http');
+const socketIo = require('socket.io');
 const cors = require('cors');
 
 
 const app = express();
+const server = http.createServer(app);
+const io = socketIo(server);
 
+// Import models and API routes
+const ChatMessage = require('./models/ChatMessage');
+const chatRoutes = require('./routes/chat');
 
 app.use(cors());
 app.use(express.json());
+// Use API routes
+app.use('/api/chat', chatRoutes);
 
 app.use('/auth', authRoutes);
 

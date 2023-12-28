@@ -1,10 +1,11 @@
 // ChatPage.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 
 function ChatPage() {
   const [messages, setMessages] = useState([]);
+
 
   const handleSendMessage = (message) => {
     setMessages([...messages, { text: message, id: messages.length, status: 'delivered' }]);

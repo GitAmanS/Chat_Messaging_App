@@ -1,8 +1,16 @@
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcrypt');
 const sequelize = require('../config/database');
 
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.UUID,
+    defaultValue: () => uuidv4(),
+    primaryKey: true,
+    allowNull: false,
+    unique: true,
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -21,6 +29,5 @@ const User = sequelize.define('User', {
     allowNull: false,
   },
 });
-
 
 module.exports = User;
