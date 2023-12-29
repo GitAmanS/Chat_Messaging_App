@@ -1,16 +1,14 @@
-// models/ChatMessage.js
 const { DataTypes } = require('sequelize');
+const { v4: uuidv4 } = require('uuid');
 const sequelize = require('../config/database');
 
 const ChatMessage = sequelize.define('ChatMessage', {
   id: {
     type: DataTypes.UUID,
-    defaultValue: DataTypes.UUIDV4,
+    defaultValue: () => uuidv4(),
     primaryKey: true,
-  },
-  userId: {
-    type: DataTypes.UUID,
     allowNull: false,
+    unique: true,
   },
   message: {
     type: DataTypes.STRING,

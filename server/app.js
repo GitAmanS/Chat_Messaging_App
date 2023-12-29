@@ -5,17 +5,37 @@ const sequelize = require('./config/database');
 const authRoutes = require('./routes/authRoutes');
 
 const http = require('http');
-const socketIo = require('socket.io');
+
 const cors = require('cors');
 
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
+
+
 
 // Import models and API routes
-const ChatMessage = require('./models/ChatMessage');
+const Messages = require('./models/ChatMessage');
+const User = require('./models/User');
 const chatRoutes = require('./routes/chat');
+
+User.hasMany(Messages, {
+  foreignKey: 'senderId',
+  as: 'OutgoingMessages'
+  });
+  
+  User.hasMany(Messages, {
+  foreignKey: 'receiverId',
+  as: 'IncomingMessages'
+  });
+
+  Messages.belongsTo(User, {
+    foreignKey: "senderId",
+    as: 'Sender'
+    });
+    Messages.belongsTo(User, {
+    foreignKey: "receiverId",
+    as: 'Receiver'
+    });
 
 app.use(cors());
 app.use(express.json());
