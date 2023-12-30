@@ -8,7 +8,7 @@ function MessageList({ messages }) {
       {messages.map((message) => (
         <div key={message.id} className="chat chat-end">
           <div className="chat-header">
-            Obi-Wan Kenobi
+            You
             <time className="text-xs opacity-50">2 hours ago</time>
           </div>
           <div className="chat-bubble">{message.message}</div>

@@ -1,42 +1,69 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
 import axios from 'axios';
 
 function ChatPage() {
   const [messages, setMessages] = useState([]);
-  const pendingMessageRef = useRef(null);
+  const [lastMessageId, setLastMessageId] = useState(null);
 
   useEffect(() => {
-    // Fetch messages from the server when the component mounts
-    const fetchMessages = async () => {
-      try {
-        const token = localStorage.getItem('token');
+    // Fetch messages from local storage when the component mounts
+    const storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
+    setMessages(storedMessages);
 
-        if (!token) {
-          console.error('User token not found in localStorage');
-          return;
-        }
-
-        const response = await axios.get('http://localhost:5000/api/chat/getMessages', {
-          headers: { Authorization: token },
-        });
-
-        // Update the messages state with the retrieved messages
-        setMessages(response.data.messages);
-      } catch (error) {
-        console.error('Error fetching messages:', error.message);
-      }
-    };
-
-    fetchMessages();
-
-    // Set up an interval to fetch messages periodically (every 1000 milliseconds)
-    const intervalId = setInterval(fetchMessages, 1000);
+    // Set up an interval to fetch new messages periodically (every 10 seconds)
+    const intervalId = setInterval(fetchNewMessages, 10000);
 
     // Clean up the interval when the component is unmounted
     return () => clearInterval(intervalId);
   }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
+
+  
+
+  const fetchNewMessages = async () => {
+    try {
+      const token = localStorage.getItem('token');
+  
+      if (!token) {
+        console.error('User token not found in localStorage');
+        return;
+      }
+  
+      // Construct the request URL with the lastMessageId
+      const url = `http://localhost:5000/api/chat/getMessages/${lastMessageId || -1}`;
+  
+      const response = await axios.get(url, {
+        headers: { Authorization: token },
+      });
+  
+      const newMessages = response.data.messages;
+  
+      // Update the messages state with the new messages
+      setMessages((prevMessages) => {
+        // Filter out duplicates based on message id
+        const uniqueNewMessages = newMessages.filter(
+          (newMsg) => !prevMessages.some((prevMsg) => prevMsg.id === newMsg.id)
+        );
+  
+        // Concatenate the unique messages with the existing messages
+        const updatedMessages = [...prevMessages, ...uniqueNewMessages];
+  
+        // Save only the last 10 messages in local storage
+        const lastTenMessages = updatedMessages.slice(-10);
+        localStorage.setItem('messages', JSON.stringify(lastTenMessages));
+  
+        // Update the lastMessageId for the next request
+        const newLastMessageId = uniqueNewMessages.length > 0 ? uniqueNewMessages[uniqueNewMessages.length - 1].id : null;
+        setLastMessageId(newLastMessageId);
+  
+        return lastTenMessages;
+      });
+    } catch (error) {
+      console.error('Error fetching messages:', error.message);
+    }
+  };
+  
 
   const handleSendMessage = async (messageText) => {
     try {
@@ -46,19 +73,6 @@ function ChatPage() {
         console.error('User token not found in localStorage');
         return;
       }
-
-      // Create a temporary message with "pending" status and a unique id
-      // const newPendingMessage = {
-      //   message: messageText,
-      //   id: Date.now(),
-      //   status: 'pending',
-      // };
-
-      // Update the messages state with the temporary "pending" message
-      // setMessages((prevMessages) => [...prevMessages, newPendingMessage]);
-
-      // Save the reference to the pending message for the finally block
-      // pendingMessageRef.current = newPendingMessage;
 
       // Send the message and token to the server using Axios
       const response = await axios.post(
@@ -70,29 +84,17 @@ function ChatPage() {
       // Assuming the server responds with data, you can handle it as needed
       console.log('Server response:', response.data);
 
-      // Update the messages state with the new message and set status to 'delivered'
-      // setMessages((prevMessages) =>
-      //   prevMessages.map((msg) =>
-      //     msg.id === pendingMessageRef.current.id ? { ...msg, status: 'delivered' } : msg
-      //   )
-      // );
+      // Fetch new messages only when a message is successfully sent
+      fetchNewMessages();
     } catch (error) {
       console.error('Error sending message:', error.message);
-
-      // If there's an error, update the status of the pending message to 'failed'
-      // setMessages((prevMessages) =>
-      //   prevMessages.map((msg) =>
-      //     msg.id === pendingMessageRef.current.id ? { ...msg, status: 'failed' } : msg
-      //   )
-      // );
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="artboard phone-2 border overflow-auto">
-        {/* Set a fixed height or max-height for the chat box */}
-        <h1>Chat with Obi-Wan Kenobi</h1>
+        <h1>Chat Application</h1>
         <MessageList messages={messages} />
       </div>
       <div className="mt-4">

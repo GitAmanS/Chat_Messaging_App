@@ -4,11 +4,10 @@ const sequelize = require('../config/database');
 
 const ChatMessage = sequelize.define('ChatMessage', {
   id: {
-    type: DataTypes.UUID,
-    defaultValue: () => uuidv4(),
-    primaryKey: true,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     allowNull: false,
-    unique: true,
+    primaryKey: true,
   },
   message: {
     type: DataTypes.STRING,

@@ -26,25 +26,30 @@ router.post('/add', authenticate, async (req, res) => {
     }
   });
 
-  // GET route to get all messages of a particular user
-router.get('/getMessages', authenticate, async (req, res) => {
-    try {
-        const  userId  = await req.user.dataValues.id;
-  
-      // Retrieve all messages where the senderId or receiverId is the current user's ID
-      const userMessages = await ChatMessage.findAll({
-        where: {
-           senderId: userId 
+// GET route to get all messages of a particular user with an ID greater than lastmsg
+router.get('/getMessages/:id', authenticate, async (req, res) => {
+  try {
+    const userId = await req.user.dataValues.id;
+    const lastmsg = req.params.id;
+
+    // Retrieve all messages where the senderId is the current user's ID and the id is greater than lastmsg
+    const userMessages = await ChatMessage.findAll({
+      where: {
+        senderId: userId,
+        id: {
+          [Op.gt]: lastmsg, // Use Sequelize's greater than operator
         },
-        order: [['createdAt', 'ASC']],
-      });
-  
-      res.status(200).json({ messages: userMessages });
-    } catch (error) {
-      console.error('Error fetching user messages:', error);
-      res.status(500).json({ error: 'Internal Server Error' });
-    }
-  });
+      },
+      order: [['createdAt', 'ASC']],
+    });
+
+    res.status(200).json({ messages: userMessages });
+  } catch (error) {
+    console.error('Error fetching user messages:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
   
 
 
