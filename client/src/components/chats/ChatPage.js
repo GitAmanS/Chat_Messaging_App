@@ -1,4 +1,3 @@
-// ChatPage.js
 import React, { useState, useEffect, useRef } from 'react';
 import MessageList from './MessageList';
 import MessageInput from './MessageInput';
@@ -31,9 +30,13 @@ function ChatPage() {
     };
 
     fetchMessages();
+
+    // Set up an interval to fetch messages periodically (every 1000 milliseconds)
+    const intervalId = setInterval(fetchMessages, 1000);
+
+    // Clean up the interval when the component is unmounted
+    return () => clearInterval(intervalId);
   }, []); // The empty dependency array ensures that this effect runs only once, similar to componentDidMount
-
-
 
   const handleSendMessage = async (messageText) => {
     try {
@@ -45,17 +48,17 @@ function ChatPage() {
       }
 
       // Create a temporary message with "pending" status and a unique id
-      const newPendingMessage = {
-        message: messageText,
-        id: Date.now(),
-        status: 'pending',
-      };
+      // const newPendingMessage = {
+      //   message: messageText,
+      //   id: Date.now(),
+      //   status: 'pending',
+      // };
 
       // Update the messages state with the temporary "pending" message
-      setMessages((prevMessages) => [...prevMessages, newPendingMessage]);
+      // setMessages((prevMessages) => [...prevMessages, newPendingMessage]);
 
       // Save the reference to the pending message for the finally block
-      pendingMessageRef.current = newPendingMessage;
+      // pendingMessageRef.current = newPendingMessage;
 
       // Send the message and token to the server using Axios
       const response = await axios.post(
@@ -68,25 +71,23 @@ function ChatPage() {
       console.log('Server response:', response.data);
 
       // Update the messages state with the new message and set status to 'delivered'
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg.id === pendingMessageRef.current.id ? { ...msg, status: 'delivered' } : msg
-        )
-      );
+      // setMessages((prevMessages) =>
+      //   prevMessages.map((msg) =>
+      //     msg.id === pendingMessageRef.current.id ? { ...msg, status: 'delivered' } : msg
+      //   )
+      // );
     } catch (error) {
       console.error('Error sending message:', error.message);
 
       // If there's an error, update the status of the pending message to 'failed'
-      setMessages((prevMessages) =>
-        prevMessages.map((msg) =>
-          msg.id === pendingMessageRef.current.id ? { ...msg, status: 'failed' } : msg
-        )
-      );
-    } 
+      // setMessages((prevMessages) =>
+      //   prevMessages.map((msg) =>
+      //     msg.id === pendingMessageRef.current.id ? { ...msg, status: 'failed' } : msg
+      //   )
+      // );
+    }
   };
-  
-  
-  
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div className="artboard phone-2 border overflow-auto">
