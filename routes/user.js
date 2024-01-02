@@ -26,5 +26,5 @@ router.get('/get-mygroups',authController.authorization,userControler.getMygroup
 router.get('/get-group',userControler.getGroupbyId)
 router.get('/get-group-messages',userControler.getGroupChatHistory)
 router.get('/get-group-members',userControler.getGroupMembersbyId)
-router.get('/',mainPagecontroler.getMainpage)
+router.get('/',authController.authorization, mainPagecontroler.getMainpage)
 module.exports = router;

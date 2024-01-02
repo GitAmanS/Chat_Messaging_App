@@ -450,3 +450,27 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
+
+// Function to clear all cookies
+function clearAllCookies() {
+    var cookies = document.cookie.split(';');
+
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i];
+        var eqPos = cookie.indexOf('=');
+        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
+    }
+}
+
+// Function to handle logout link click
+function handleLogoutClick(event) {
+    // Prevent the default behavior of the link
+    event.preventDefault();
+
+    // Clear all cookies
+    clearAllCookies();
+
+    // Redirect to the '/' page
+    window.location.href = '/';
+}

@@ -1,5 +1,31 @@
 import helperFunctions from "/js/home/helperFunctions.mjs";
 
+
+// Function to check if a cookie exists
+function checkCookie(name) {
+    var cookies = document.cookie.split(';');
+    for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        if (cookie.indexOf(name + '=') === 0) {
+            return cookie.substring(name.length + 1, cookie.length);
+        }
+    }
+    return null;
+}
+
+// Check if the 'token' cookie exists
+var tokenValue = checkCookie('token');
+
+// If the 'token' cookie exists, redirect to the '/user' page
+if (tokenValue !== null) {
+    // Redirect to the '/user' page
+    window.location.href = '/user';
+} else {
+    // If the 'token' cookie doesn't exist, handle it accordingly
+    console.log('Token does not exist. Perform necessary actions.');
+}
+
+
 //ON  SIGNUP
 const signupElements = {
     name: signup_form.querySelector('input[name="Name"]'),
