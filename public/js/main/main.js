@@ -72,7 +72,7 @@ function showChatOnScreen(chatHistory, userId) {
                     <a href="${ele.message}" target="_blank">
                       <img src="${ele.message}" class="chat-image">
                     </a>
-                    <small class="text-muted text-end">${formattedDate}</small>
+                    <small class="text-white">${formattedDate}</small>
                 </div>
             </div>
                 `
@@ -81,8 +81,8 @@ function showChatOnScreen(chatHistory, userId) {
                 <div class="col-12 mb-2 pe-0">
                     <div class="card p-2 float-end rounded-4 self-chat-class">
                         <p class="text-primary my-0"><small>${ele.name}</small></p>
-                        <p class="my-0">${ele.message}</p>
-                        <small class="text-muted text-end">${formattedDate}</small>
+                        <p class="my-0 text-white">${ele.message}</p>
+                        <small class="text-info">${formattedDate}</small>
                     </div>
                 </div>`
             }
@@ -449,28 +449,3 @@ setupProfile();
 $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
-
-
-// Function to clear all cookies
-function clearAllCookies() {
-    var cookies = document.cookie.split(';');
-
-    for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i];
-        var eqPos = cookie.indexOf('=');
-        var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT';
-    }
-}
-
-// Function to handle logout link click
-function handleLogoutClick(event) {
-    // Prevent the default behavior of the link
-    event.preventDefault();
-
-    // Clear all cookies
-    clearAllCookies();
-
-    // Redirect to the '/' page
-    window.location.href = '/';
-}

@@ -32,10 +32,18 @@
     }
     .self-chat-class{
         max-width: 90%;
-        background-color: rgb(186, 201, 201); 
+        background-color: #1F2023; 
     }
     .chat-image{
         height: 10rem;
         width: 14rem;
         object-fit: cover;
+    }
+
+    .bg-custom {
+        background-color: #2B2D31;
+    }
+
+    .bg-inside{
+        background-color: #313338;
     }
