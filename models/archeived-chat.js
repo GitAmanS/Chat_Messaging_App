@@ -28,7 +28,7 @@ const ArchivedChat = sequelize.define('ArchivedChat',{
     }
   },
   {
-    timestamps: false
+    timestamps: true
   }
 );
 

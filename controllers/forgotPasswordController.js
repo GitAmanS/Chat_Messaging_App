@@ -1,5 +1,5 @@
 
-const User = require('../models/users');
+const User = require('../models/user');
 const ForgotPasswords = require('../models/forgot-password');
 const bcrypt = require('bcrypt');
 const Sib = require('sib-api-v3-sdk');
@@ -7,7 +7,7 @@ const client = Sib.ApiClient.instance;
 client.authentications['api-key'].apiKey = process.env.SIB_API_KEY;
 const tranEmailApi = new Sib.TransactionalEmailsApi();
 
-exports.userResetpasswordMail = async (request, response, next) => {
+exports.userResetPasswordMail = async (request, response, next) => {
     try {
         
         const { email } = request.body;
@@ -76,12 +76,12 @@ exports.userResetpasswordMail = async (request, response, next) => {
         response.status(500).json({ message: 'Interenal Server Error' });
     }
 }
-exports.userResetpasswordform = async (request, response, next) => {
+exports.userResetPasswordform = async (request, response, next) => {
     try {
         let forgotId = request.params.forgotId;
         const passwordreset = await ForgotPasswords.findByPk(forgotId);
-        if (passwordreset.isactive) {
-            passwordreset.isactive = false;
+        if (passwordreset.isActive) {
+            passwordreset.isActive = false;
             await passwordreset.save();
             response.sendFile('reset.html',{root:'views'})
         } else {
@@ -93,7 +93,7 @@ exports.userResetpasswordform = async (request, response, next) => {
     }
 }
 
-exports.userResetpassword = async (request, response, next) => {
+exports.userResetPassword = async (request, response, next) => {
     try {
         const { resetid, newpassword } = request.body;
         const passwordreset = await ForgotPasswords.findByPk(resetid);

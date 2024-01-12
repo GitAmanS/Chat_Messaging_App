@@ -22,6 +22,6 @@ const ChatHistory = sequelize.define('ChatHistory', {
       },
 },
     {
-        timestamps: false
+        timestamps: true
     });
 module.exports = ChatHistory;

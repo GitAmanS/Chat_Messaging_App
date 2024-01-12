@@ -16,7 +16,7 @@ const User = sequelize.define('User',{
         type: Sequelize.STRING,
         allowNull:false
     },
-    phonenumber:{
+    phoneNumber:{
         type: Sequelize.BIGINT(10),
         unique: true,
         allowNull: false
@@ -30,7 +30,7 @@ const User = sequelize.define('User',{
         allowNull:false 
     }},
     {
-        timestamps: false
+        timestamps: true
     }
 )
 module.exports=User;

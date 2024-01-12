@@ -8,7 +8,7 @@ require('dotenv').config();
 
 // Importing the routes for our API
 const sequelize = require('./util/database');
-const User = require('./models/users');
+const User = require('./models/user');
 const Forgotpasswords = require('./models/forgot-password');
 const ChatHistory = require('./models/chat-history');
 const Groups = require("./models/groups");
@@ -18,8 +18,11 @@ const websocketService = require('./services/websocket');
 const cronService = require('./services/cron');
 cronService.job.start();
 
-const maninRoute = require('./routes/home');
-const userRoute = require('./routes/user');
+const mainRoute = require('./routes/mainpageRoutes');
+const userRoute = require('./routes/userRoutes');
+const groupRoutes = require('./routes/groupRoutes');
+const forgotPasswordRoutes= require("./routes/forgotPasswordRoutes");
+const chatRoutes = require("./routes/chatRoutes");
 const app = express();
 app.use(cors({
   origin: '*',
@@ -33,7 +36,10 @@ app.use(express.static('dist'));
 app.use(cookieParser());
 
 app.use('/user',userRoute)
-app.use(maninRoute)
+app.use('/user',groupRoutes)
+app.use('/user',forgotPasswordRoutes)
+app.use('/user',chatRoutes)
+app.use(mainRoute)
 
 const httpServer = createServer(app);
 const io = new Server(httpServer, {

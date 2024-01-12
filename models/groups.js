@@ -23,7 +23,7 @@ const Group = sequelize.define('Groups', {
     },    
     },
     {
-        timestamps: false
+        timestamps: true
     });
 
 module.exports = Group;

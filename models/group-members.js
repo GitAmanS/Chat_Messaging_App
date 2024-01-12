@@ -9,7 +9,7 @@ const Groupmember = sequelize.define('GroupMembers',{
         primaryKey:true
     }},
     {
-        timestamps: false
+        timestamps: true
     });
 
 module.exports=Groupmember;
