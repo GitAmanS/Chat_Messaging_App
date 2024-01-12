@@ -1,7 +1,7 @@
 // groupController.js
 const User = require('../models/user');
 const Group = require('../models/groups')
-const ChatHistory = require('../models/chat-history')
+const ChatHistory = require('../models/chatHistory')
 
 exports.createGroup = async (request, response, next) => {
     try {

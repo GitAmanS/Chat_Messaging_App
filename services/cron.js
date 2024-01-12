@@ -1,7 +1,7 @@
 const { CronJob } = require('cron');
 const {Op} = require('sequelize');
-const ChatHistory = require('../models/chat-history');
-const ArchivedChat = require('../models/archeived-chat');
+const ChatHistory = require('../models/chatHistory');
+const ArchivedChat = require('../models/archeivedChat');
 exports.job = new CronJob(
     '0 0 * * *', 
     function () {

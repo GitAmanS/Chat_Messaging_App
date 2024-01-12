@@ -11,16 +11,16 @@ const secretKey = process.env.SECRET_KEY;
 
 exports.userSignUp = async (request, response, next) => {
     try {
-        const { name, email, phonenumber, imageUrl, password } = request.body;
+        const { name, email, phoneNumber, imageUrl, password } = request.body;
 
         let userExist = await User.findOne({
             where: {
-                [Op.or]: [{ email }, { phoneNumber:phonenumber }]
+                [Op.or]: [{ email }, { phoneNumber }]
             }
         });
         if (!userExist) {
             const hash = await bcrypt.hash(password, 10);
-            const user = await User.create({ name, email, phoneNumber:phonenumber, imageUrl, password: hash });
+            const user = await User.create({ name, email, phoneNumber, imageUrl, password: hash });
             const token = jwt.sign({ userId: user.id }, secretKey, { expiresIn: '12h' });
             response.cookie('token', token, { maxAge: 3600000 });
             return response.status(201).json({ message: "user Account created successfully" });

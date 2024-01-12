@@ -48,7 +48,7 @@ async function on_Signup(e) {
                 const data = {
                     name: signupElements.name.value,
                     email: signupElements.email.value,
-                    phonenumber: signupElements.phoneNo.value,
+                    phoneNumber: signupElements.phoneNo.value,
                     imageUrl:Math.floor(Math.random() * 1000),
                     password: signupElements.password1.value
                 }

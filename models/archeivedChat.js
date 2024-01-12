@@ -1,7 +1,9 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
-
-const ArchivedChat = sequelize.define('ArchivedChat',{
+const {
+  Model
+} = require('sequelize');
+const archivedChat = sequelize.define('archivedChat',{
     id: {
       type: Sequelize.BIGINT,
       autoIncrement: true,
@@ -12,10 +14,10 @@ const ArchivedChat = sequelize.define('ArchivedChat',{
       type: Sequelize.TEXT,
       allowNull: false
     },
-    isImage:{
+    isMedia:{
       type : Sequelize.BOOLEAN , 
-    defaultValue : false
-  },
+      defaultValue : false
+    },
     date_time: {
       type: Sequelize.DATE,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -32,4 +34,4 @@ const ArchivedChat = sequelize.define('ArchivedChat',{
   }
 );
 
-module.exports = ArchivedChat;
+module.exports = archivedChat;

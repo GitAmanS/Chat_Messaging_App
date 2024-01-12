@@ -1,6 +1,6 @@
 
 const User = require('../models/user');
-const ForgotPasswords = require('../models/forgot-password');
+const ForgotPasswords = require('../models/forgotPassword');
 const bcrypt = require('bcrypt');
 const Sib = require('sib-api-v3-sdk');
 const client = Sib.ApiClient.instance;

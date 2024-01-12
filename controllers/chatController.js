@@ -1,5 +1,5 @@
 // chatController.js
-const ChatHistory = require('../models/chat-history')
+const ChatHistory = require('../models/chatHistory')
 const awsService = require('../services/awsservices');
 const User = require('../models/user');
 const { Op } = require('sequelize');
@@ -58,7 +58,7 @@ exports.getAllChatHistory = async (request, response, next) => {
             return {
                 messageId: ele.id,
                 message: ele.message,
-                isImage: ele.isImage,
+                isMedia: ele.isMedia,
                 name: user.name,
                 userId: user.id,
                 date_time: ele.date_time
@@ -83,13 +83,13 @@ exports.saveChatImages = async (request, response, next) => {
         if (GroupId == 0) {
             await user.createChatHistory({
                 message: imageUrl,
-                isImage: true
+                isMedia: true
             })
         } else {
             await user.createChatHistory({
                 message: imageUrl,
                 GroupId,
-                isImage: true
+                isMedia: true
             })
         }
 

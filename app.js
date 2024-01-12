@@ -9,10 +9,10 @@ require('dotenv').config();
 // Importing the routes for our API
 const sequelize = require('./util/database');
 const User = require('./models/user');
-const Forgotpasswords = require('./models/forgot-password');
-const ChatHistory = require('./models/chat-history');
+const forgotPassword = require('./models/forgotPassword');
+const chatHistory = require('./models/chatHistory');
 const Groups = require("./models/groups");
-const GroupMember = require('./models/group-members');
+const groupMember = require('./models/groupMembers');
 
 const websocketService = require('./services/websocket');
 const cronService = require('./services/cron');
@@ -52,15 +52,15 @@ io.on('connection', websocketService )
 
 instrument(io, { auth: false })
 
-User.hasMany(Forgotpasswords);
-Forgotpasswords.belongsTo(User,{constraints:true,onDelete:'CASCADE'});
-User.hasMany(ChatHistory)
-ChatHistory.belongsTo(User, { constraints: true });
-User.belongsToMany(Groups, { through: GroupMember });
-Groups.belongsToMany(User, { through: GroupMember });
+User.hasMany(forgotPassword);
+forgotPassword.belongsTo(User,{constraints:true,onDelete:'CASCADE'});
+User.hasMany(chatHistory)
+chatHistory.belongsTo(User, { constraints: true });
+User.belongsToMany(Groups, { through: groupMember });
+Groups.belongsToMany(User, { through: groupMember });
 Groups.belongsTo(User,{foreignKey: 'AdminId',constraints:true,onDelete:'CASCADE'})
-Groups.hasMany(ChatHistory);
-ChatHistory.belongsTo(Groups);
+Groups.hasMany(chatHistory);
+chatHistory.belongsTo(Groups);
 
 const PORT = process.env.PORT || 3000;
 async function initiate() {

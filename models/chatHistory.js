@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-const ChatHistory = sequelize.define('ChatHistory', {
+const chatHistory = sequelize.define('chatHistory', {
     id: {
         type: Sequelize.BIGINT,
         autoIncrement: true,
@@ -12,7 +12,7 @@ const ChatHistory = sequelize.define('ChatHistory', {
         type: Sequelize.TEXT(),
         allowNull: false
     },
-    isImage:{
+    isMedia:{
         type : Sequelize.BOOLEAN , 
       defaultValue : false
     },
@@ -24,4 +24,4 @@ const ChatHistory = sequelize.define('ChatHistory', {
     {
         timestamps: true
     });
-module.exports = ChatHistory;
+module.exports = chatHistory;
